@@ -2,6 +2,16 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - MainGUI",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "MainGUI",
+            "args": ""
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - HackPanel",
             "request": "launch",
             "cwd": "${workspaceFolder}",
