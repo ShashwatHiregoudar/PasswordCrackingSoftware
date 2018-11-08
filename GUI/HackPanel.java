@@ -23,7 +23,7 @@ public class HackPanel extends JPanel {
     public void loadUsers(){
         BufferedReader Reader;
         try {
-            Reader = new BufferedReader(new FileReader("../Passwords.csv"));
+            Reader = new BufferedReader(new FileReader("../Database/Passwords.csv"));
             System.out.println("Now opening the file");
             String line = Reader.readLine();
             while (line != null) {
