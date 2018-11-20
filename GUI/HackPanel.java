@@ -8,76 +8,49 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * HackPanel
  */
 public class HackPanel extends JPanel {
-    // Frame f;
     private JButton bf_Button;
     private JButton rh_Button;
     private JButton dic_Button;
-    private JComboBox user_ComboBox;
-    String[] default_user_list = { "Shashwat", "Maven", "Sheetal" };
-    ArrayList strings = new ArrayList<String>();
-    String[] usersArr;
-
-    public void loadUsers() {
-        BufferedReader Reader;
-        try {
-            Reader = new BufferedReader(new FileReader("Passwords.csv"));
-            System.out.println("Now opening the file");
-            String line = Reader.readLine();
-            while (line != null) {
-                String[] userinfo = line.split(",");
-                strings.add(userinfo[0]);
-                line = Reader.readLine();
-            }
-            int i = 0;
-            String[] usersArr = new String[strings.size()];
-            for (Object var : strings) {
-                usersArr[i] = var.toString();
-                i = i + 1;
-            }
-            this.usersArr = usersArr;
-            Reader.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    private JTextArea name_text_area;
+    private JLabel name_label;
 
     public HackPanel(int width, int height) {
         bf_Button = new JButton("Brute Force");
         rh_Button = new JButton("Rainbow Hash");
         dic_Button = new JButton("Dictionary Attack");
+        name_label = new JLabel("Nameeeeeee");
+        //loadUsers();
 
-        loadUsers();
-
-        user_ComboBox = new JComboBox(usersArr);
+        name_text_area = new JTextArea();
         add(bf_Button);
         add(rh_Button);
         add(dic_Button);
-        add(user_ComboBox);
-
-        user_ComboBox.addMouseListener(new MouseAdapter() {
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                System.out.println("Clicked");
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                System.out.println("Entered");
-                loadUsers();
-            }
-        });
-
+        add(name_text_area);
+        add(name_label);
         // adjust size and set layout
         setPreferredSize(new Dimension(width, height));
         setLayout(null);
+    
+        name_text_area.setBounds((width / 2) , height / 9, 140, 20);
+        name_label.setBounds((width / 2) - 70, 3 * (height / 9), 140, 40);
 
-        user_ComboBox.setBounds((width / 2) - 70, height / 9, 140, 40);
         bf_Button.setBounds((width / 2) - 70, 3 * (height / 9), 140, 40);
+        bf_Button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                bruteForceAttack();
+                e.toString();
+            }
+        });
         rh_Button.setBounds((width / 2) - 70, 5 * (height / 9), 140, 40);
         dic_Button.setBounds((width / 2) - 80, 7 * (height / 9), 160, 40);
     }
@@ -88,6 +61,21 @@ public class HackPanel extends JPanel {
         frame.getContentPane().add(new HackPanel(400, 300));
         frame.pack();
         frame.setVisible(true);
+    }
+
+    public String hash(String s) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] hashInBytes = md.digest(s.getBytes(StandardCharsets.UTF_8));
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hashInBytes) {
+            sb.append(String.format("%02x", b));
+        }
+        String hashedPassword = sb.toString();
+        return hashedPassword;
+    }
+
+    void bruteForceAttack() {
+
     }
 
 }

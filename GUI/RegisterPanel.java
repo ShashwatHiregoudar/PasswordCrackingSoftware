@@ -25,7 +25,7 @@ public class RegisterPanel extends JPanel {
             }
             String hashedPassword = sb.toString();
             System.out.println("After Hash : " + hashedPassword);
-            FileWriter out = new FileWriter("../Passwords.csv", true);
+            FileWriter out = new FileWriter("Passwords.csv", true);
             out.append(name_textArea.getText()+","+hashedPassword+"\n");
             out.close();
 
