@@ -79,7 +79,7 @@ public class MainGUI extends JFrame {
 			}
 		});
 		btnBruteForce.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnBruteForce.setBounds(193, 91, 168, 30);
+		btnBruteForce.setBounds(193, 121, 168, 30);
 		hackPanel.add(btnBruteForce);
 
 		JButton btnDictionaryAttack = new JButton("Dictionary Attack");
@@ -91,7 +91,7 @@ public class MainGUI extends JFrame {
 			}
 		});
 		btnDictionaryAttack.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnDictionaryAttack.setBounds(193, 152, 168, 30);
+		btnDictionaryAttack.setBounds(193, 202, 168, 30);
 		hackPanel.add(btnDictionaryAttack);
 
 		JButton btnRainbowHash = new JButton("Rainbow Hash");
@@ -103,7 +103,7 @@ public class MainGUI extends JFrame {
 		});
 		btnRainbowHash.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnRainbowHash.setBounds(193, 213, 168, 30);
-		hackPanel.add(btnRainbowHash);
+		//hackPanel.add(btnRainbowHash);
 
 		JPanel registerPanel = new JPanel();
 		tabbedPane.addTab("Register", null, registerPanel, null);
@@ -153,10 +153,23 @@ public class MainGUI extends JFrame {
 		BufferedReader Reader;
 		String[] userinfo = getInfo(name);
 		try {
+			//Reader = new BufferedReader(new FileReader("realhuman_phill"));
 			Reader = new BufferedReader(new FileReader("dictionary.txt"));
 			String line = Reader.readLine();
 			while (line != null) {
-				if (hash(line).equalsIgnoreCase(userinfo[1])) {
+				if (strcompare(hash(line), userinfo[1]) ) {
+					JOptionPane.showMessageDialog(null, "The password is : " + line);
+				}
+				if (strcompare(hash_sha1(line), userinfo[1]) ) {
+					JOptionPane.showMessageDialog(null, "The password is : " + line);
+				}
+				if (strcompare(hash_md5(line), userinfo[1]) ) {
+					JOptionPane.showMessageDialog(null, "The password is : " + line);
+				}
+				if (strcompare(hash_sha384(line), userinfo[1]) ) {
+					JOptionPane.showMessageDialog(null, "The password is : " + line);
+				}
+				if (strcompare(hash_sha512(line), userinfo[1]) ) {
 					JOptionPane.showMessageDialog(null, "The password is : " + line);
 				}
 				line = Reader.readLine();
@@ -183,23 +196,121 @@ public class MainGUI extends JFrame {
 		return "aaaaaaa";
 	}
 
+	public static String hash_sha1(String s) {
+		String hashedPassword;
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-1");
+			byte[] hashInBytes = md.digest(s.getBytes(StandardCharsets.UTF_8));
+			StringBuilder sb = new StringBuilder();
+			for (byte b : hashInBytes) {
+				sb.append(String.format("%02x", b));
+			}
+			hashedPassword = sb.toString();
+			return hashedPassword;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return "aaaaaaa";
+	}
+
+	public static String hash_md5(String s) {
+		String hashedPassword;
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			byte[] hashInBytes = md.digest(s.getBytes(StandardCharsets.UTF_8));
+			StringBuilder sb = new StringBuilder();
+			for (byte b : hashInBytes) {
+				sb.append(String.format("%02x", b));
+			}
+			hashedPassword = sb.toString();
+			return hashedPassword;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return "aaaaaaa";
+	}
+
+	public static String hash_sha512(String s) {
+		String hashedPassword;
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-512");
+			byte[] hashInBytes = md.digest(s.getBytes(StandardCharsets.UTF_8));
+			StringBuilder sb = new StringBuilder();
+			for (byte b : hashInBytes) {
+				sb.append(String.format("%02x", b));
+			}
+			hashedPassword = sb.toString();
+			return hashedPassword;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return "aaaaaaa";
+	}
+
+	public static String hash_sha384(String s) {
+		String hashedPassword;
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-384");
+			byte[] hashInBytes = md.digest(s.getBytes(StandardCharsets.UTF_8));
+			StringBuilder sb = new StringBuilder();
+			for (byte b : hashInBytes) {
+				sb.append(String.format("%02x", b));
+			}
+			hashedPassword = sb.toString();
+			return hashedPassword;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return "aaaaaaa";
+	}
+
+	
+
 	public void bf(String[] info) {
 		System.out.println("In BF Method");
 		// char[] chars =
 		// "`1234567890-=~!@#$%^&*()_+;:,<.>/?abcdefghijklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM
 		// ".toCharArray();
 		char[] chars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-		for (int len = 0; len <= 4; len++) {
+		for (int len = 0; len < 4; len++) {
 			System.out.println("------------------------------------------------------------------------------------");
 			brute_force(info[1], chars, len, new char[len], 0);
 		}
+	}
+
+	public static boolean strcompare(String s1, String s2) {
+		char[] sa1 = s1.toCharArray();
+		char[] sa2 = s2.toCharArray();
+		for (int i = 0; i < s1.length(); i++) {
+			if(sa1[i] != sa2[i]){
+				return false;
+			}
+		}	
+		return true;
 	}
 
 	public static void brute_force(String pwd, char[] chars, int len, char[] build, int pos) {
 		if (pos == len) {
 			String word = new String(build);
 			//System.out.println(word);
-			if (hash(word).equals(pwd)) {
+			if (strcompare(hash(word), pwd) ) {
+				System.out.println("Foud");
+				JOptionPane.showMessageDialog(null, "The Password is : " + word);
+			}
+			if (strcompare(hash_sha1(word), pwd) ) {
+				System.out.println("Foud");
+				JOptionPane.showMessageDialog(null, "The Password is : " + word);
+			}
+			if (strcompare(hash_md5(word), pwd) ) {
+				System.out.println("Foud");
+				JOptionPane.showMessageDialog(null, "The Password is : " + word);
+			}
+			if (strcompare(hash_sha384(word), pwd) ) {
+				System.out.println("Foud");
+				JOptionPane.showMessageDialog(null, "The Password is : " + word);
+			}
+			if (strcompare(hash_sha512(word), pwd) ) {
+				System.out.println("Foud");
 				JOptionPane.showMessageDialog(null, "The Password is : " + word);
 			}
 			return;

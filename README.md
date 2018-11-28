@@ -13,10 +13,11 @@ java GUI.MainGUI
 ```
 
 ## Team Members
-    Shashwat.S.H
     S. Maivannan
-    Sheetal U
-    Shetal D
     Shankar T
+    Shashwat.S.H
+    Shetal D
+    Sheetal U
+    
 
 please star this repo if you like my work :innocent:
